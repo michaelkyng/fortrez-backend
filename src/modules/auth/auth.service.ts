@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, ConflictException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../users/user.service';
 import * as bcrypt from 'bcrypt';
@@ -11,23 +11,39 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
+  private sanitizeUser(user: any) {
+    if (!user) return null;
+    const { password, __v, ...rest } = user.toObject ? user.toObject() : user;
+    return rest;
+  }
+
   async validateUser(email: string, password: string): Promise<any> {
     const user = await this.userService.findOne(email);
-    if (user && (await bcrypt.compare(password, user.password))) {
-      const { password, ...result } = user;
-      return result;
-    }
-    return null;
+    if (!user) return null;
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) return null;
+
+    return this.sanitizeUser(user);
   }
 
   async login(loginDto: LoginDto) {
-    const user = await this.validateUser(loginDto.email, loginDto.password);
+    const user = await this.userService.findOne(loginDto.email);
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    const payload = { email: user.email, sub: user._id };
+    const isPasswordValid = await bcrypt.compare(loginDto.password, user.password);
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+
+    const sanitizedUser = this.sanitizeUser(user);
+
+    const payload = { email: sanitizedUser.email, sub: sanitizedUser._id };
+
     return {
+      user: sanitizedUser,
       access_token: this.jwtService.sign(payload),
     };
   }
@@ -36,15 +52,23 @@ export class AuthService {
     // Check if user already exists
     const existingUser = await this.userService.findOne(registerDto.email);
     if (existingUser) {
-      throw new UnauthorizedException('User already exists');
+      throw new ConflictException('User already exists');
     }
 
-    // Create new user
-    const user = await this.userService.create(registerDto);
+    // Hash password before saving
+    const hashedPassword = await bcrypt.hash(registerDto.password, 10);
 
-    // Generate JWT token
-    const payload = { email: user.email, sub: user._id };
+    const newUser = await this.userService.create({
+      ...registerDto,
+      password: hashedPassword,
+    });
+
+    const sanitizedUser = this.sanitizeUser(newUser);
+
+    const payload = { email: sanitizedUser.email, sub: sanitizedUser._id };
+
     return {
+      user: sanitizedUser,
       access_token: this.jwtService.sign(payload),
     };
   }
