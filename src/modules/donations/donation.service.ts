@@ -21,19 +21,6 @@ export class DonationService {
       .exec();
   }
 
-  async create(createDonationDto: CreateDonationDto): Promise<Donation> {
-    const createdDonation = new this.donationModel(createDonationDto);
-    const donation = await createdDonation.save();
-
-    // Update campaign raised amount
-    await this.campaignService.updateRaisedAmount(
-      donation.campaign.toString(),
-      donation.amount,
-    );
-
-    return donation;
-  }
-
   async findByCampaign(campaignId: string): Promise<Donation[]> {
     return this.donationModel
       .find({ campaign: campaignId })

@@ -9,6 +9,10 @@ export type DonationDocument = Donation & Document;
 
 @Schema({ timestamps: true })
 export class Donation extends BaseSchema   {
+
+  @Prop({ required: true })
+  txHash: string;
+
   @Prop({ required: true })
   amount: number;
 

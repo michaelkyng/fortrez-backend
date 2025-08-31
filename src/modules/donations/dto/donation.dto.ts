@@ -1,6 +1,7 @@
 import { IsNumber, IsString, IsNotEmpty, Min } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
+import { DonationStatus } from '@fortrez/interfaces';
 
 export class CreateDonationDto {
   @ApiProperty({
@@ -14,13 +15,13 @@ export class CreateDonationDto {
   @Min(1, { message: 'Amount must be greater than 0' })
   amount: number;
 
-  @ApiProperty({
-    description: 'ID of the campaign to donate to',
-    example: '5f8d0f3d9d5b1d2d9c9f1d5b'
-  })
-  @IsString()
-  @IsNotEmpty()
-  campaignId: string;
+  // @ApiProperty({
+  //   description: 'ID of the campaign to donate to',
+  //   example: '5f8d0f3d9d5b1d2d9c9f1d5b'
+  // })
+  // @IsString()
+  // @IsNotEmpty()
+  // campaignId: string;
 
   @ApiProperty({
     description: 'Blockchain transaction hash',
@@ -31,6 +32,15 @@ export class CreateDonationDto {
   @IsString()
   @IsNotEmpty()
   txHash: string;
+
+  @ApiProperty({
+    description: 'Donation status',
+    example: 'pending',
+    enum: DonationStatus
+  })
+  @IsString()
+  @IsNotEmpty()
+  status: DonationStatus;
 }
 
 

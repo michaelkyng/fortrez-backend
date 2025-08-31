@@ -26,35 +26,6 @@ import { Donation } from '@fortrez/schemas';
 export class DonationController {
   constructor(private readonly donationService: DonationService) {}
 
-  @Post()
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth('JWT-auth')
-  @ApiOperation({ summary: 'Create a new donation' })
-  @ApiResponse({
-    status: HttpStatus.CREATED,
-    description: 'The donation has been successfully created.',
-    type: Donation,
-  })
-  @ApiResponse({
-    status: HttpStatus.UNAUTHORIZED,
-    description: 'Unauthorized',
-  })
-  @ApiResponse({
-    status: HttpStatus.BAD_REQUEST,
-    description: 'Invalid input',
-  })
-  async create(
-    @Body() createDonationDto: CreateDonationDto,
-    @Request() req: JwtRequest,
-  ) {
-    const donation = {
-      ...createDonationDto,
-      donor: req.user.userId,
-      campaign: createDonationDto.campaignId,
-    };
-    return this.donationService.create(donation);
-  }
-
   @Get('campaign/:campaignId')
   @ApiOperation({ summary: 'Get all donations for a specific campaign' })
   @ApiParam({
