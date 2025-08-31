@@ -1,4 +1,4 @@
-import { JwtPayload } from '@luqa/interfaces';
+import { JwtPayload } from '@fortrez/interfaces';
 import {
   Injectable,
   ExecutionContext,
@@ -20,7 +20,6 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
         token,
         process.env.JWT_SECRET,
       ) as JwtPayload;
-      request['tenant'] = decoded.tenant;
       request['user'] = decoded.sub;
       request['userRole'] = decoded.role;
       return true;

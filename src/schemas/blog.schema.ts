@@ -1,11 +1,11 @@
-// src/blogs/schemas/blog.schema.ts
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
+import { BaseSchema } from './base.schema';
 
 export type BlogDocument = Blog & Document;
 
 @Schema({ timestamps: true })
-export class Blog {
+export class Blog extends BaseSchema {
   @Prop({ required: true })
   title: string;
 
