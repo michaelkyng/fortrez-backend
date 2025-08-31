@@ -24,4 +24,11 @@ export class CampaignService {
     if (!campaign) throw new NotFoundException('Campaign not found');
     return campaign;
   }
+
+  async updateRaisedAmount(campaignId: string, amount: number) {
+    return this.campaignModel.updateOne(
+      { _id: campaignId },
+      { $inc: { raisedAmount: amount } },
+    );
+  }
 }

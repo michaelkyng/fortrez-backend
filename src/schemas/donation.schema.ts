@@ -1,25 +1,25 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
-import { BaseSchema } from './base.schema';
+import { Document, Schema as MongooseSchema } from 'mongoose';
+import { User, Campaign, BaseSchema } from '@fortrez/schemas';
+import { DonationStatus } from '@fortrez/interfaces';
 
 export type DonationDocument = Donation & Document;
 
+
+
 @Schema({ timestamps: true })
-export class Donation extends BaseSchema {
-  @Prop({ type: Types.ObjectId, ref: 'Campaign', required: true })
-  campaign: Types.ObjectId;
-
-  @Prop({ type: Types.ObjectId, ref: 'User', required: true })
-  donor: Types.ObjectId;
-
+export class Donation extends BaseSchema   {
   @Prop({ required: true })
-  amount: number; // Amount in HBAR
+  amount: number;
 
-  @Prop({ default: 'pending' })
-  status: 'pending' | 'confirmed' | 'failed';
+  @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User', required: true })
+  donor: User;
 
-  @Prop()
-  transactionHash?: string; // Blockchain tx hash
+  @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Campaign', required: true })
+  campaign: Campaign;
+
+  @Prop({ type: String, enum: DonationStatus, default: DonationStatus.PENDING })
+  status: DonationStatus;
 }
 
 export const DonationSchema = SchemaFactory.createForClass(Donation);

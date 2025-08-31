@@ -3,6 +3,9 @@ import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../users/user.service';
 import * as bcrypt from 'bcrypt';
 import { LoginDto, RegisterDto } from './dto/auth.dto';
+import { User, UserDocument } from '@fortrez/schemas';
+import { SafeUser } from '@fortrez/interfaces';
+import { Document } from 'mongoose';
 
 @Injectable()
 export class AuthService {
@@ -11,13 +14,12 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  private sanitizeUser(user: any) {
-    if (!user) return null;
-    const { password, __v, ...rest } = user.toObject ? user.toObject() : user;
-    return rest;
+  private sanitizeUser(user: UserDocument): SafeUser {
+    const { password, ...result } = user.toObject();
+    return result as unknown as SafeUser;
   }
 
-  async validateUser(email: string, password: string): Promise<any> {
+  async validateUser(email: string, password: string): Promise<SafeUser | null> {
     const user = await this.userService.findOne(email);
     if (!user) return null;
 
@@ -55,7 +57,7 @@ export class AuthService {
       throw new ConflictException('User already exists');
     }
 
-    // Hash password before saving
+    
     const hashedPassword = await bcrypt.hash(registerDto.password, 10);
 
     const newUser = await this.userService.create({

@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Donation, DonationDocument, DonationStatus } from './donation.schema';
+import { Donation, DonationDocument } from '@fortrez/schemas';
+import { DonationStatus } from '@fortrez/interfaces';
 import { CampaignService } from '../campaigns/campaign.service';
+import { CreateDonationDto } from './dto/donation.dto';
 
 @Injectable()
 export class DonationService {
@@ -19,7 +21,7 @@ export class DonationService {
       .exec();
   }
 
-  async create(createDonationDto: any): Promise<Donation> {
+  async create(createDonationDto: CreateDonationDto): Promise<Donation> {
     const createdDonation = new this.donationModel(createDonationDto);
     const donation = await createdDonation.save();
 

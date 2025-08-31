@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Donation, DonationSchema } from './donation.schema';
+import { Donation, DonationSchema } from '@fortrez/schemas';
 import { DonationController } from './donation.controller';
 import { DonationService } from './donation.service';
 import { CampaignModule } from '../campaigns/campaign.module';

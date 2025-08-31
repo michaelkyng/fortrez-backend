@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Campaign, CampaignSchema } from './campaign.schema';
+import { Campaign, CampaignSchema } from '@fortrez/schemas';
 import { CampaignController } from './campaign.controller';
 import { CampaignService } from './campaign.service';
 

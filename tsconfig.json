@@ -21,10 +21,10 @@
     "strict": false,
     "paths": {
       "@fortrez/schemas": ["src/schemas"],
-      "@fortrez/common/interfaces": ["src/common/interfaces"],
-      "@fortrez/common/utils": ["src/common/utils"],
-      "@fortrez/common/middlewares": ["src/common/middlewares"],
-      "@fortrez/common/emailtemplates": ["src/common/emailtemplates"],
+      "@fortrez/interfaces": ["src/interfaces"],
+      "@fortrez/utils": ["src/common/utils"],
+      "@fortrez/middlewares": ["src/common/middlewares"],
+      "@fortrez/common/emailtemplates": ["src/common/emailtemplates"]
     }
   }
 }
