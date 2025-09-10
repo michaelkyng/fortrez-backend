@@ -43,6 +43,9 @@ export class Campaign extends BaseSchema {
   @Prop({ type: DeadlineSchema, default: () => ({ date: null, hasDeadline: false }) })
   deadline: Deadline;
 
+  @Prop({ required: true })
+  coverImage: string;
+
   @Prop({ default: false })
   status: CampaignStatus;
 

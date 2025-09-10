@@ -15,6 +15,9 @@ export class Blog extends BaseSchema {
   @Prop()
   content?: string; // optional full article body
 
+  @Prop({ required: true })
+  coverImage: string;
+
   @Prop({ type: [String], default: [] })
   tags: string[];
 
@@ -23,15 +26,6 @@ export class Blog extends BaseSchema {
 
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })
   authorId: Types.ObjectId;
-
-  @Prop({ default: 0 })
-  views: number;
-
-  @Prop({ default: 0 })
-  likes: number;
-
-  @Prop({ default: false })
-  isPublished: boolean;
 }
 
 export const BlogSchema = SchemaFactory.createForClass(Blog);
