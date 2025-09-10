@@ -39,8 +39,8 @@ async function bootstrap() {
   if (process.env.NODE_ENV !== 'production' || process.env.ENABLE_SWAGGER === 'true') {
     const httpAdapter = app.getHttpAdapter();
     
-    // Serve Swagger UI files
-    httpAdapter.get('/api', (req, res) => {
+    // Serve Swagger UI at the root path
+    const serveSwaggerUI = (res) => {
       res.send(`
         <!DOCTYPE html>
         <html>
@@ -49,39 +49,54 @@ async function bootstrap() {
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist@4.5.0/swagger-ui.css">
+            <style>
+              html { box-sizing: border-box; overflow: -moz-scrollbars-vertical; overflow-y: scroll; }
+              *, *:before, *:after { box-sizing: inherit; }
+              body { margin: 0; background: #fafafa; }
+            </style>
           </head>
           <body>
             <div id="swagger-ui"></div>
             <script src="https://unpkg.com/swagger-ui-dist@4.5.0/swagger-ui-bundle.js"></script>
+            <script src="https://unpkg.com/swagger-ui-dist@4.5.0/swagger-ui-standalone-preset.js"></script>
             <script>
               window.onload = function() {
+                // Get the base URL from the current location
+                const baseUrl = window.location.pathname.replace(/\/$/, '');
+                
                 window.ui = SwaggerUIBundle({
-                  url: '/api-json',
+                  url: baseUrl + '/api-json',
                   dom_id: '#swagger-ui',
                   presets: [
                     SwaggerUIBundle.presets.apis,
                     SwaggerUIBundle.SwaggerUIStandalonePreset
                   ],
-                  layout: "BaseLayout",
+                  layout: "StandaloneLayout",
                   deepLinking: true,
                   showExtensions: true,
                   showCommonExtensions: true,
                   docExpansion: 'none',
                   tagsSorter: 'alpha',
                   operationsSorter: 'alpha',
-                  persistAuthorization: true
+                  persistAuthorization: true,
+                  validatorUrl: null
                 });
               };
             </script>
           </body>
         </html>
       `);
-    });
+    };
 
-    // Serve the OpenAPI JSON
-    httpAdapter.get('/api-json', (req, res) => {
-      res.json(document);
-    });
+    // Serve Swagger UI at multiple paths
+    httpAdapter.get('/', (req, res) => serveSwaggerUI(res));
+    httpAdapter.get('/api', (req, res) => serveSwaggerUI(res));
+    httpAdapter.get('/api-docs', (req, res) => serveSwaggerUI(res));
+
+    // Serve the OpenAPI JSON at multiple paths
+    const serveOpenApiJson = (res) => res.json(document);
+    httpAdapter.get('/api-json', (req, res) => serveOpenApiJson(res));
+    httpAdapter.get('/api-docs-json', (req, res) => serveOpenApiJson(res));
   }
 
   await app.listen(process.env.PORT ?? 3000);
