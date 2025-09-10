@@ -1,14 +1,14 @@
 import { Controller, Post, Body, Get, Param, HttpStatus, Request } from '@nestjs/common';
 import { CampaignService } from './campaign.service';
 import { CreateCampaignDto, UpdateCampaignDto } from './dto/campaign.dto';
-import { Campaign, Donation } from 'src/schemas';
+import { Campaign, Donation } from '../../schemas';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBearerAuth } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { Delete, Patch, UseGuards } from '@nestjs/common/decorators';
 import { CreateDonationDto } from '../donations/dto/donation.dto';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
-import { JwtRequest, UserRole } from 'src/interfaces';
+import { JwtRequest, UserRole } from '../../interfaces';
 
 @ApiTags('campaigns')
 @Controller('campaigns')

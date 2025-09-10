@@ -20,7 +20,7 @@ import {
 import { BlogService } from './blog.service';
 import { CreateBlogDto } from './dto/create-blog.dto';
 import { UpdateBlogDto } from './dto/update-blog.dto';
-import { Blog } from 'src/schemas';
+import { Blog } from '../../schemas';
 
 @ApiTags('Blogs')
 @Controller('blogs')

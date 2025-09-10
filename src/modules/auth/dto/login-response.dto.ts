@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { SafeUser } from 'src/interfaces';
+import { SafeUser } from '../../../interfaces';
 
 export class LoginResponseDto {
   @ApiProperty({ description: 'Status message' })

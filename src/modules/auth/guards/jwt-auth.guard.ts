@@ -1,4 +1,4 @@
-import { JwtPayload } from 'src/interfaces';
+import { JwtPayload } from '../../../interfaces';
 import {
   Injectable,
   ExecutionContext,

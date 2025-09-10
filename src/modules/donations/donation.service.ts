@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Donation, DonationDocument } from 'src/schemas';
-import { DonationStatus } from 'src/interfaces';
+import { Donation, DonationDocument } from '../../schemas';
+import { DonationStatus } from '../../interfaces';
 import { CampaignService } from '../campaigns/campaign.service';
 import { CreateDonationDto } from './dto/donation.dto';
 

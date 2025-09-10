@@ -11,7 +11,7 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { CampaignStatus, CampaignType, CampaignCategory } from 'src/interfaces';
+import { CampaignStatus, CampaignType, CampaignCategory } from '../../interfaces';
 
 class DeadlineDto {
   @ApiPropertyOptional({

@@ -1,7 +1,7 @@
 import { IsNumber, IsString, IsNotEmpty, Min } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
-import { DonationStatus } from 'src/interfaces';
+import { DonationStatus } from '../../../interfaces';
 
 export class CreateDonationDto {
   @ApiProperty({
