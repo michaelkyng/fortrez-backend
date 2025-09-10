@@ -1,4 +1,4 @@
-import { JwtPayload } from '@fortrez/interfaces';
+import { JwtPayload } from 'src/interfaces';
 import {
   Injectable,
   ExecutionContext,

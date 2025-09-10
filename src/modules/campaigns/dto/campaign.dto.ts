@@ -1,13 +1,23 @@
-import { IsArray, IsBoolean, IsDateString, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, ValidateNested } from 'class-validator';
+import {
+  IsArray,
+  IsBoolean,
+  IsDateString,
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { CampaignStatus, CampaignType, CampaignCategory } from '@fortrez/interfaces';
+import { CampaignStatus, CampaignType, CampaignCategory } from 'src/interfaces';
 
 class DeadlineDto {
   @ApiPropertyOptional({
     description: 'Deadline date in ISO 8601 format',
     example: '2023-12-31T23:59:59.999Z',
-    nullable: true
+    nullable: true,
   })
   @IsDateString()
   @IsOptional()
@@ -15,7 +25,7 @@ class DeadlineDto {
 
   @ApiPropertyOptional({
     description: 'Whether the campaign has a deadline',
-    default: false
+    default: false,
   })
   @IsBoolean()
   @IsOptional()
@@ -26,7 +36,7 @@ export class CreateCampaignDto {
   @ApiProperty({
     description: 'Title of the campaign',
     example: 'Help build a new community center',
-    required: true
+    required: true,
   })
   @IsString()
   @IsNotEmpty()
@@ -35,7 +45,7 @@ export class CreateCampaignDto {
   @ApiProperty({
     description: 'Detailed description of the campaign',
     example: 'We are raising funds to build a new community center that will serve...',
-    required: true
+    required: true,
   })
   @IsString()
   @IsNotEmpty()
@@ -44,7 +54,7 @@ export class CreateCampaignDto {
   @ApiProperty({
     description: 'The problem this campaign aims to solve',
     example: 'Lack of community spaces in our neighborhood',
-    required: false
+    required: false,
   })
   @IsString()
   @IsOptional()
@@ -54,7 +64,7 @@ export class CreateCampaignDto {
     description: 'Proposed solutions for the problem',
     example: ['Build a community center', 'Organize local events'],
     required: false,
-    type: [String]
+    type: [String],
   })
   @IsArray()
   @IsString({ each: true })
@@ -64,7 +74,7 @@ export class CreateCampaignDto {
   @ApiProperty({
     description: 'Funding goal in the smallest unit (e.g., tinybars for HBAR)',
     example: 1000000000, // 10 HBAR in tinybars
-    required: true
+    required: true,
   })
   @IsNumber()
   @IsNotEmpty()
@@ -74,7 +84,7 @@ export class CreateCampaignDto {
     description: 'Deadline configuration for the campaign',
     type: DeadlineDto,
     required: false,
-    default: { date: null, hasDeadline: false }
+    default: { date: null, hasDeadline: false },
   })
   @ValidateNested()
   @Type(() => DeadlineDto)
@@ -84,7 +94,7 @@ export class CreateCampaignDto {
     description: 'Category of the campaign',
     enum: CampaignCategory,
     example: CampaignCategory.COMMUNITY,
-    required: true
+    required: true,
   })
   @IsEnum(CampaignCategory)
   @IsNotEmpty()
@@ -94,7 +104,7 @@ export class CreateCampaignDto {
     description: 'Type of the campaign',
     enum: CampaignType,
     example: CampaignType.CREATOR,
-    required: true
+    required: true,
   })
   @IsEnum(CampaignType)
   @IsNotEmpty()
@@ -104,7 +114,7 @@ export class CreateCampaignDto {
 export class UpdateCampaignDto {
   @ApiPropertyOptional({
     description: 'Updated title of the campaign',
-    example: 'Updated: Help build a new community center'
+    example: 'Updated: Help build a new community center',
   })
   @IsString()
   @IsOptional()
@@ -112,7 +122,7 @@ export class UpdateCampaignDto {
 
   @ApiPropertyOptional({
     description: 'Updated description of the campaign',
-    example: 'Updated description with more details...'
+    example: 'Updated description with more details...',
   })
   @IsString()
   @IsOptional()
@@ -120,7 +130,7 @@ export class UpdateCampaignDto {
 
   @ApiPropertyOptional({
     description: 'The problem this campaign aims to solve',
-    example: 'Updated problem statement'
+    example: 'Updated problem statement',
   })
   @IsString()
   @IsOptional()
@@ -129,7 +139,7 @@ export class UpdateCampaignDto {
   @ApiPropertyOptional({
     description: 'Updated solutions for the problem',
     example: ['Updated solution 1', 'Updated solution 2'],
-    type: [String]
+    type: [String],
   })
   @IsArray()
   @IsString({ each: true })
@@ -138,7 +148,7 @@ export class UpdateCampaignDto {
 
   @ApiPropertyOptional({
     description: 'Updated funding goal in the smallest unit',
-    example: 1500000000 // 15 HBAR in tinybars
+    example: 1500000000, // 15 HBAR in tinybars
   })
   @IsNumber()
   @IsOptional()
@@ -146,7 +156,7 @@ export class UpdateCampaignDto {
 
   @ApiPropertyOptional({
     description: 'Updated raised amount in the smallest unit',
-    example: 500000000 // 5 HBAR in tinybars
+    example: 500000000, // 5 HBAR in tinybars
   })
   @IsNumber()
   @IsOptional()
@@ -154,7 +164,7 @@ export class UpdateCampaignDto {
 
   @ApiPropertyOptional({
     description: 'Updated deadline configuration',
-    type: DeadlineDto
+    type: DeadlineDto,
   })
   @ValidateNested()
   @Type(() => DeadlineDto)
@@ -164,7 +174,7 @@ export class UpdateCampaignDto {
   @ApiPropertyOptional({
     description: 'Updated category of the campaign',
     enum: CampaignCategory,
-    example: CampaignCategory.COMMUNITY
+    example: CampaignCategory.COMMUNITY,
   })
   @IsEnum(CampaignCategory)
   @IsOptional()
@@ -173,7 +183,7 @@ export class UpdateCampaignDto {
   @ApiPropertyOptional({
     description: 'Updated type of the campaign',
     enum: CampaignType,
-    example: CampaignType.CREATOR
+    example: CampaignType.CREATOR,
   })
   @IsEnum(CampaignType)
   @IsOptional()
@@ -182,11 +192,9 @@ export class UpdateCampaignDto {
   @ApiPropertyOptional({
     description: 'Updated status of the campaign',
     enum: CampaignStatus,
-    example: CampaignStatus.ACTIVE
+    example: CampaignStatus.ACTIVE,
   })
   @IsEnum(CampaignStatus)
   @IsOptional()
   status?: CampaignStatus;
-
-
 }

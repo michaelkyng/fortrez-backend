@@ -1,25 +1,10 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Param,
-  UseGuards,
-  Request,
-  HttpStatus,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, UseGuards, Request, HttpStatus } from '@nestjs/common';
 import { DonationService } from './donation.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CreateDonationDto } from './dto/donation.dto';
-import { JwtRequest } from '@fortrez/interfaces';
-import {
-  ApiBearerAuth,
-  ApiOperation,
-  ApiResponse,
-  ApiTags,
-  ApiParam,
-} from '@nestjs/swagger';
-import { Donation } from '@fortrez/schemas';
+import { JwtRequest } from 'src/interfaces';
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags, ApiParam } from '@nestjs/swagger';
+import { Donation } from 'src/schemas';
 
 @ApiTags('donations')
 @Controller('donations')

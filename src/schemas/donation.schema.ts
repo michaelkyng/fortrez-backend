@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as MongooseSchema } from 'mongoose';
-import { User, Campaign, BaseSchema } from '@fortrez/schemas';
-import { DonationStatus } from '@fortrez/interfaces';
+import { User, Campaign, BaseSchema } from '../schemas';
+import { DonationStatus } from '../interfaces';
 
 export type DonationDocument = Donation & Document;
 

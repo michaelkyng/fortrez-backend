@@ -1,9 +1,26 @@
-import { Controller, Get, Post, Body, Param, Patch, Delete, HttpStatus, ParseUUIDPipe } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBody, ApiCreatedResponse } from '@nestjs/swagger';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Patch,
+  Delete,
+  HttpStatus,
+  ParseUUIDPipe,
+} from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiParam,
+  ApiBody,
+  ApiCreatedResponse,
+} from '@nestjs/swagger';
 import { BlogService } from './blog.service';
 import { CreateBlogDto } from './dto/create-blog.dto';
 import { UpdateBlogDto } from './dto/update-blog.dto';
-import { Blog } from '@fortrez/schemas';
+import { Blog } from 'src/schemas';
 
 @ApiTags('Blogs')
 @Controller('blogs')
@@ -75,10 +92,7 @@ export class BlogController {
     description: 'Blog post not found',
   })
   @ApiBody({ type: UpdateBlogDto })
-  async update(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Body() updateBlogDto: UpdateBlogDto,
-  ) {
+  async update(@Param('id', ParseUUIDPipe) id: string, @Body() updateBlogDto: UpdateBlogDto) {
     return this.blogService.update(id, updateBlogDto);
   }
 

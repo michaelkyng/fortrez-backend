@@ -1,13 +1,13 @@
 import { IsNumber, IsString, IsNotEmpty, Min } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
-import { DonationStatus } from '@fortrez/interfaces';
+import { DonationStatus } from 'src/interfaces';
 
 export class CreateDonationDto {
   @ApiProperty({
     description: 'Donation amount in the smallest unit (e.g., tinybars for HBAR)',
     minimum: 1,
-    example: 100000000
+    example: 100000000,
   })
   @IsNumber()
   @IsNotEmpty()
@@ -27,7 +27,7 @@ export class CreateDonationDto {
     description: 'Blockchain transaction hash',
     example: '0x123...abc',
     minLength: 64,
-    maxLength: 66
+    maxLength: 66,
   })
   @IsString()
   @IsNotEmpty()
@@ -36,11 +36,9 @@ export class CreateDonationDto {
   @ApiProperty({
     description: 'Donation status',
     example: 'pending',
-    enum: DonationStatus
+    enum: DonationStatus,
   })
   @IsString()
   @IsNotEmpty()
   status: DonationStatus;
 }
-
-

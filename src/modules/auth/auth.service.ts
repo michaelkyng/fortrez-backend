@@ -3,8 +3,8 @@ import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../users/user.service';
 import * as bcrypt from 'bcrypt';
 import { LoginDto, RegisterDto } from './dto/auth.dto';
-import { User, UserDocument } from '@fortrez/schemas';
-import { SafeUser } from '@fortrez/interfaces';
+import { User, UserDocument } from 'src/schemas';
+import { SafeUser } from 'src/interfaces';
 import { Document } from 'mongoose';
 
 @Injectable()

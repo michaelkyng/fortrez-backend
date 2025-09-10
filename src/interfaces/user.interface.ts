@@ -1,4 +1,4 @@
-import { User } from '@fortrez/schemas';
+import { User } from '../schemas';
 import { Types } from 'mongoose';
 
 export enum UserRole {
