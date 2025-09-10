@@ -28,11 +28,11 @@ async function bootstrap(): Promise<ReturnType<typeof serverlessExpress>> {
       }),
     );
 
-    // CORS
-    app.enableCors({
-      origin: true,
-      credentials: true,
-    });
+    // // CORS
+    // app.enableCors({
+    //   origin: true,
+    //   credentials: true,
+    // });
 
     // Swagger
     const config = new DocumentBuilder()
