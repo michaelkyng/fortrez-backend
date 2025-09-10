@@ -8,18 +8,17 @@ import express, { Express } from 'express';
 import serverlessExpress from '@vendia/serverless-express';
 import { VercelRequest, VercelResponse } from '@vercel/node';
 
-// cache the express instance instead of lambda handler
-let cachedApp: Express | null = null;
-let cachedServer: ReturnType<typeof serverlessExpress> | null = null;
+// Cache the serverless handler
+let cachedHandler: any = null;
 
-async function bootstrap(): Promise<ReturnType<typeof serverlessExpress>> {
-  if (!cachedServer) {
+async function bootstrap() {
+  if (!cachedHandler) {
     const expressApp: Express = express();
     const adapter = new ExpressAdapter(expressApp);
 
     const app = await NestFactory.create(AppModule, adapter);
 
-    // global pipes
+    // Global pipes
     app.useGlobalPipes(
       new ValidationPipe({
         transform: true,
@@ -28,11 +27,11 @@ async function bootstrap(): Promise<ReturnType<typeof serverlessExpress>> {
       }),
     );
 
-    // // CORS
-    // app.enableCors({
-    //   origin: true,
-    //   credentials: true,
-    // });
+    // CORS - Enable this if needed
+    app.enableCors({
+      origin: true,
+      credentials: true,
+    });
 
     // Swagger
     const config = new DocumentBuilder()
@@ -59,18 +58,15 @@ async function bootstrap(): Promise<ReturnType<typeof serverlessExpress>> {
 
     await app.init();
 
-    cachedApp = expressApp;
-    cachedServer = serverlessExpress({ app: expressApp });
+    // Create the serverless handler
+    cachedHandler = serverlessExpress({ app: expressApp });
   }
 
-  return cachedServer!;
+  return cachedHandler;
 }
 
-// Vercel entrypoint: (req, res) style
+// Vercel entrypoint
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const server = await bootstrap();
-
-  // ✅ Instead of passing (event, context, callback),
-  // just pass req & res directly (express mode)
-  return (cachedApp as Express)(req, res);
+  return server(req, res);
 }
