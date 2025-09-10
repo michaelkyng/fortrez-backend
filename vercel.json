@@ -2,14 +2,51 @@
   "version": 2,
   "builds": [
     {
-      "src": "api/index.ts",
+      "src": "src/main.ts",
       "use": "@vercel/node"
+    },
+    {
+      "src": "node_modules/@nestjs/swagger/ui/static/*",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
     {
+      "src": "/api",
+      "dest": "/src/main.ts"
+    },
+    {
+      "src": "/api-json",
+      "dest": "/src/main.ts"
+    },
+    {
+      "src": "/api-docs",
+      "dest": "/src/main.ts"
+    },
+    {
+      "src": "/api-docs-json",
+      "dest": "/src/main.ts"
+    },
+    {
+      "src": "/swagger-ui.css",
+      "dest": "https://unpkg.com/swagger-ui-dist@4.5.0/swagger-ui.css"
+    },
+    {
+      "src": "/swagger-ui-bundle.js",
+      "dest": "https://unpkg.com/swagger-ui-dist@4.5.0/swagger-ui-bundle.js"
+    },
+    {
+      "src": "/swagger-ui-standalone-preset.js",
+      "dest": "https://unpkg.com/swagger-ui-dist@4.5.0/swagger-ui-standalone-preset.js"
+    },
+    {
       "src": "/(.*)",
-      "dest": "/api/index"
+      "dest": "src/main.ts",
+      "methods": ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+      "headers": {
+        "Access-Control-Allow-Origin": "*",
+        "Cache-Control": "no-cache, no-store, must-revalidate, max-age=0, s-maxage=0"
+      }
     }
   ]
 }

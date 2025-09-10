@@ -1,26 +1,19 @@
 import { Controller, Post, Body, Get, Param, HttpStatus, Request } from '@nestjs/common';
 import { CampaignService } from './campaign.service';
 import { CreateCampaignDto, UpdateCampaignDto } from './dto/campaign.dto';
-import { Campaign, Donation } from '@fortrez/schemas';
-import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-  ApiParam,
-  ApiBearerAuth,
-} from '@nestjs/swagger';
+import { Campaign, Donation } from '../../schemas';
+import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBearerAuth } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { Delete, Patch, UseGuards } from '@nestjs/common/decorators';
 import { CreateDonationDto } from '../donations/dto/donation.dto';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
-import { JwtRequest, UserRole } from '@fortrez/interfaces';
+import { JwtRequest, UserRole } from '../../interfaces';
 
 @ApiTags('campaigns')
 @Controller('campaigns')
 export class CampaignController {
   constructor(private readonly service: CampaignService) {}
-
 
   @Get()
   @ApiOperation({ summary: 'Get all campaigns' })
@@ -129,33 +122,39 @@ export class CampaignController {
   }
 
   @Post()
-    @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles(UserRole.ADMIN)
-    @ApiBearerAuth('JWT-auth')
-    @ApiOperation({ summary: 'Create a new donation' })
-    @ApiResponse({
-      status: HttpStatus.CREATED,
-      description: 'The donation has been successfully created.',
-      type: Donation,
-    })
-    @ApiResponse({
-      status: HttpStatus.UNAUTHORIZED,
-      description: 'Unauthorized',
-    })
-    @ApiResponse({
-      status: HttpStatus.BAD_REQUEST,
-      description: 'Invalid input',
-    })
-    async donate(
-      @Param('campaignId') campaignId: string,
-      @Body() createDonationDto: CreateDonationDto,
-      @Request() req: JwtRequest,
-    ) {
-      const donation = {
-        ...createDonationDto,
-        donor: req.user.userId,
-        campaign: campaignId,
-      };
-      return this.service.updateRaisedAmount(donation.campaign, donation.amount, donation.txHash, donation.donor, donation.status);
-    } 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ADMIN)
+  @ApiBearerAuth('JWT-auth')
+  @ApiOperation({ summary: 'Create a new donation' })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: 'The donation has been successfully created.',
+    type: Donation,
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: 'Unauthorized',
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Invalid input',
+  })
+  async donate(
+    @Param('campaignId') campaignId: string,
+    @Body() createDonationDto: CreateDonationDto,
+    @Request() req: JwtRequest,
+  ) {
+    const donation = {
+      ...createDonationDto,
+      donor: req.user.userId,
+      campaign: campaignId,
+    };
+    return this.service.updateRaisedAmount(
+      donation.campaign,
+      donation.amount,
+      donation.txHash,
+      donation.donor,
+      donation.status,
+    );
+  }
 }
