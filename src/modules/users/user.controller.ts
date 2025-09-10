@@ -1,11 +1,21 @@
-import { Controller, Post, Body, Get, Param, UseGuards, HttpStatus, Patch, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Param,
+  UseGuards,
+  HttpStatus,
+  Patch,
+  Delete,
+} from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBearerAuth } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { User } from '@fortrez/schemas';
+import { User } from '../../schemas';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { RolesGuard } from '../auth/guards/roles.guard';
-import { UserRole } from '@fortrez/interfaces';
+import { UserRole } from '../../interfaces';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { UpdateUserDto } from './dto';
 
@@ -13,7 +23,6 @@ import { UpdateUserDto } from './dto';
 @Controller('users')
 export class UserController {
   constructor(private readonly service: UserService) {}
-
 
   @Get(':id')
   @UseGuards(JwtAuthGuard)
@@ -60,7 +69,6 @@ export class UserController {
     return this.service.findAll();
   }
 
-
   @Post('register')
   @ApiOperation({ summary: 'Register a new user' })
   @ApiResponse({
@@ -103,7 +111,6 @@ export class UserController {
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.service.update(id, updateUserDto);
   }
-  
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
@@ -131,6 +138,4 @@ export class UserController {
   async delete(@Param('id') id: string) {
     return this.service.delete(id);
   }
-
-  
 }

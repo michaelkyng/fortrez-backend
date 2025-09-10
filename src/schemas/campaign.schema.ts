@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as MongooseSchema, Types } from 'mongoose';
 import { BaseSchema } from './base.schema';
-import { CampaignStatus, CampaignType, CampaignCategory } from '@fortrez/interfaces';
+import { CampaignStatus, CampaignType, CampaignCategory } from '../interfaces';
 
 export type CampaignDocument = Campaign & Document;
 
