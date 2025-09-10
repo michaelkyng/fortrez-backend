@@ -41,11 +41,24 @@ async function bootstrap() {
   
   const document = SwaggerModule.createDocument(app, config);
   
-  // Set up Swagger at /api
+  // Set up Swagger at /api with CDN for assets
   SwaggerModule.setup('api', app, document, {
     customSiteTitle: 'Fortrez API',
+    customCss: `
+      .swagger-ui .topbar { display: none }
+      .swagger-ui .info { margin: 20px 0 }
+      .swagger-ui .info .title { font-size: 24px; margin: 0 0 10px; }
+    `,
+    customCssUrl: 'https://unpkg.com/swagger-ui-dist@4.5.0/swagger-ui.css',
+    customJs: [
+      'https://unpkg.com/swagger-ui-dist@4.5.0/swagger-ui-bundle.js',
+      'https://unpkg.com/swagger-ui-dist@4.5.0/swagger-ui-standalone-preset.js',
+    ],
     swaggerOptions: {
       persistAuthorization: true,
+      docExpansion: 'none',
+      filter: true,
+      showRequestDuration: true,
     },
   });
 
