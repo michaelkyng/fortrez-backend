@@ -1,25 +1,48 @@
-// src/main.ts
 import { NestFactory } from '@nestjs/core';
+import { ValidationPipe } from '@nestjs/common';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
-import { configureApp } from './app.config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  
-  // Apply shared configuration
-  configureApp(app);
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      whitelist: true,
+      forbidNonWhitelisted: true,
+    }),
+  );
+  app.enableCors();
 
-  const port = process.env.PORT || 3000;
-  await app.listen(port);
+  // Swagger configuration
+  const config = new DocumentBuilder()
+    .setTitle('Fortrez API')
+    .setDescription('The Fortrez crowdfunding platform API documentation')
+    .setVersion('1.0')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        name: 'JWT',
+        description: 'Enter JWT token',
+        in: 'header',
+      },
+      'JWT-auth', // This name is used as the key for the security requirement in the @ApiBearerAuth() decorator
+    )
+    .build();
   
-  console.log(`🚀 Application is running on: http://localhost:${port}`);
-  console.log(`📚 Swagger documentation: http://localhost:${port}/api`);
-}
-
-// Only call bootstrap if this file is being executed directly
-if (require.main === module) {
-  bootstrap().catch((error) => {
-    console.error('Error starting the application:', error);
-    process.exit(1);
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document, {
+    swaggerOptions: {
+      persistAuthorization: true,
+    },
   });
+
+  await app.listen(process.env.PORT ?? 3000);
+  console.log(`Application is running on port ${process.env.PORT}`);
 }
+void bootstrap().catch((err) => {
+  console.error('Failed to start application:', err);
+  process.exit(1);
+});

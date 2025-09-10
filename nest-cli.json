@@ -7,16 +7,5 @@
     "tsConfigPath": "tsconfig.build.json",
     "assets": ["**/*.json", "**/*.md"],
     "watchAssets": true
-  },
-  "projects": {
-    "fortrez-backend": {
-      "type": "application",
-      "root": "",
-      "entryFile": "main",
-      "sourceRoot": "src",
-      "compilerOptions": {
-        "tsConfigPath": "tsconfig.build.json"
-      }
-    }
   }
 }
