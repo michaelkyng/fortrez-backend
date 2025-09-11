@@ -14,8 +14,9 @@ import { BlogModule } from './modules/blog/blog.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      envFilePath: '.env',
     }),
-    MongooseModule.forRoot(process.env.MONGODB_URI),
+    MongooseModule.forRoot(process.env.MONGODB_URI || 'mongodb://localhost/fortrez'),
     AuthModule,
     UserModule,
     CampaignModule,
