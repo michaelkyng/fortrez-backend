@@ -5,17 +5,17 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  
+
   // Enable CORS
   app.enableCors();
-  
+
   // Global validation pipe
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
       whitelist: true,
       forbidNonWhitelisted: true,
-    })
+    }),
   );
 
   // Swagger configuration
@@ -32,25 +32,22 @@ async function bootstrap() {
         description: 'Enter JWT token',
         in: 'header',
       },
-      'JWT-auth'
+      'JWT-auth',
     )
-    .addServer(process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000')
+    .addServer(
+      process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000',
+    )
     .build();
-  
+
   const document = SwaggerModule.createDocument(app, config);
-  
+
   // Set up Swagger at /api with CDN for assets
   SwaggerModule.setup('api', app, document, {
     customSiteTitle: 'Fortrez API',
-    customCss: `
-      .swagger-ui .topbar { display: none }
-      .swagger-ui .info { margin: 20px 0 }
-      .swagger-ui .info .title { font-size: 24px; margin: 0 0 10px; }
-    `,
-    customCssUrl: 'https://unpkg.com/swagger-ui-dist@4.5.0/swagger-ui.css',
+    customCssUrl: 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.9.0/swagger-ui.css',
     customJs: [
-      'https://unpkg.com/swagger-ui-dist@4.5.0/swagger-ui-bundle.js',
-      'https://unpkg.com/swagger-ui-dist@4.5.0/swagger-ui-standalone-preset.js',
+      'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.9.0/swagger-ui-bundle.js',
+      'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.9.0/swagger-ui-standalone-preset.js',
     ],
     swaggerOptions: {
       persistAuthorization: true,
