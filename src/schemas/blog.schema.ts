@@ -10,19 +10,13 @@ export class Blog extends BaseSchema {
   title: string;
 
   @Prop({ required: true })
-  description: string;
-
-  @Prop()
-  content?: string; // optional full article body
+  content?: string; 
 
   @Prop({ required: true })
   coverImage: string;
 
   @Prop({ type: [String], default: [] })
   tags: string[];
-
-  @Prop()
-  category: string;
 
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })
   authorId: Types.ObjectId;
